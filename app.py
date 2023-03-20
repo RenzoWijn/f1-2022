@@ -27,24 +27,38 @@ app.layout = dbc.Container([
     
     dbc.Row([
         dbc.Col([
-            dash_table.DataTable(
-            id="table",
-            columns=[
-                {"name": "Column", "id": "Column"},
-                {"name": "Value", "id": "Value"},
-            ],
-            style_cell={
-                "textAlign": "center",
-                "padding": "5px",
-            },
-            style_table={
-                "width": "100%",
-                "height": "800px",
-                "overflowY": "auto",
-            },
-            fill_width=False,
-            cell_selectable=False
-        ),
+            dbc.Row([
+                html.Img(id="image")
+            ]),
+            dbc.Row([
+                dash_table.DataTable(
+                id="table",
+                columns=[
+                    {"name": "Stats", "id": "Column"},
+                    {"name": "GP", "id": "Value"},
+                ],
+                style_cell={
+                'textAlign': 'center',
+                'padding': '5px',
+                'backgroundColor': '#222222',  # set background color of cell
+                'color': 'white',  # set text color of cell
+                'font-size': '16px',  # set font size of cell
+                },
+                style_header={
+                    'backgroundColor': '#333333',  # set background color of header
+                    'fontWeight': 'bold',  # set font weight of header
+                    'color': 'white',  # set text color of header
+                    'font-size': '20px',  # set font size of header
+                },
+                style_table={
+                    "width": "100%",
+                    "height": "400px",
+                    "overflowY": "auto",
+                },
+                fill_width=False,
+                # className="table-striped table-hover table-bordered"
+                )
+            ]),
         ], width=4),
         
         dbc.Col([
@@ -66,16 +80,15 @@ app.layout = dbc.Container([
                     "mapbox": {
                         "style": "carto-darkmatter",
                         "center": {"lat": df["lat"].mean(), "lon": df["lng"].mean()},
-                        "zoom": 2,
+                        "zoom": 1,
                     },
                     "margin": {"l": 0, "r": 0, "t": 0, "b": 0},
-                    "height": 400,
+                    "height": 600,
                 },
             },
         ),
         ], width=8)
     ]),
-    
 ])
 
 # Define callback to update table
@@ -83,17 +96,18 @@ app.layout = dbc.Container([
     dash.dependencies.Output("table", "data"),
     dash.dependencies.Input("map", "clickData"),
 )
+
 def update_table(click_data):
     if not click_data:
         return []
     point_index = click_data["points"][0]["pointNumber"]
     row = df.iloc[point_index]
     data = [
-        {"Column": "Round", "Value": row["Round"]},
-        {"Column": "Race Date", "Value": row["Race Date"]},
-        {"Column": "Grand Prix Name", "Value": row["GP Name"]},
         {"Column": "Country", "Value": row["Country"]},
         {"Column": "City", "Value": row["City"]},
+        {"Column": "Grand Prix Name", "Value": row["GP Name"]},
+        {"Column": "Round", "Value": row["Round"]},
+        {"Column": "Race Date", "Value": row["Race Date"]},
         {"Column": "Number of Laps", "Value": row["Number of Laps"]},
         {"Column": "Circuit Length(km)", "Value": row["Circuit Length(km)"]},
         {"Column": "Race Distance(km)", "Value": row["Race Distance(km)"]},
@@ -102,6 +116,20 @@ def update_table(click_data):
         {"Column": "Year of First GP", "Value": row["First GP"]},
     ]
     return data
+
+# Define callback to update image
+@app.callback(
+    dash.dependencies.Output("image", "src"),
+    dash.dependencies.Input("map", "clickData"),
+)
+
+def update_image(click_data):
+    if not click_data:
+        return ""
+    point_index = click_data["points"][0]["pointNumber"]
+    row = df.iloc[point_index]
+    image_path = os.path.join("assets", f"{row['GP Name']}.png")
+    return image_path if os.path.exists(image_path) else ""
 
 if __name__ == "__main__":
     app.run_server(debug=True)
