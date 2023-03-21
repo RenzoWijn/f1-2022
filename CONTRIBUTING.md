@@ -1,67 +1,40 @@
-# Contributing to f1-2021-analysis
+# Contributing to f1-2022
 
-This outlines how to propose a change to f1-2021-analysis. Contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.
-For more detailed info about contributing to this, and other tidyverse packages, please see the
-[**development contributing guide**](https://rstd.io/tidy-contrib). 
+I welcome any kind of contribution to my dashboard, from simple comment or question to a full fledged [pull request](https://help.github.com/articles/about-pull-requests/). Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Fixing typos
+A contribution can be one of the following cases:
 
-You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the _source_ file. 
-This generally means you'll need to edit [roxygen2 comments](https://roxygen2.r-lib.org/articles/roxygen2.html) in an `.R`, not a `.Rd` file. 
-You can find the `.R` file that generates the `.Rd` by reading the comment in the first line.
+1. you have a question;
+2. you think you may have found a bug (including unexpected behavior);
+3. you want to make some kind of change to the code base (e.g. to fix a bug, to add a new feature, to update documentation).
 
-## Bigger changes
+The sections below outline the steps in each case.
 
-If you want to make a bigger change, it's a good idea to first file an issue and make sure someone from the team agrees that it’s needed. 
+## You have a question
 
-### Report bugs
-If you’ve found a bug, please first check if there is already an open issue for the bug. If there is, please add your comments to the issue to minimize redundancy. Otherwise, please include the following information when reporting the bug:
+1. use the search functionality [here](https://github.com/RenzoWijn/f1-2023-calendar/issues) to see if someone already filed the same issue;
+2. if your issue search did not yield any relevant results, make a new issue;
+3. apply the "Question" label; apply other labels when relevant.
 
-*   Your operating system name and version.
-*   Any details about your local setup that might be helpful in troubleshooting.
-*   Detailed steps to reproduce the bug.
+## You think you may have found a bug
 
-If possible, please include in the issue a minimal [reprex](https://www.tidyverse.org/help/#reprex) (this will also help you write a unit test, if needed).
+1. use the search functionality [here](https://github.com/RenzoWijn/f1-2023-calendar/issues) to see if someone already filed the same issue;
+2. if your issue search did not yield any relevant results, make a new issue, making sure to provide enough information to the rest of the community to understand the cause and context of the problem. Depending on the issue, you may want to include:
+    - the [SHA hashcode](https://help.github.com/articles/autolinked-references-and-urls/#commit-shas) of the commit that is causing your problem;
+    - some identifying information (name and version number) for dependencies you're using;
+    - information about the operating system;
+3. apply relevant labels to the newly created issue.
 
-### Fix bugs
-Look through the GitHub issues for bugs. Anything tagged with "bug" and "help wanted" is open to whoever wants to implement it.
+## You want to make some kind of change to the code base
 
-### Implement features
-Look through the GitHub issues for features. Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it.
+1. (**important**) announce your plan to the rest of the community _before you start working_. This announcement should be in the form of a (new) issue;
+2. (**important**) wait until some kind of consensus is reached about your idea being a good idea;
+3. if needed, fork the repository to your own Github profile and create your own feature branch off of the latest main commit. While working on your feature branch, make sure to stay up to date with the main branch by pulling in changes, possibly from the 'upstream' repository (follow the instructions [here](https://help.github.com/articles/configuring-a-remote-for-a-fork/) and [here](https://help.github.com/articles/syncing-a-fork/));
+4. Install dependencies with `pip install -r requirements.txt`;
+5. make sure the existing tests still work by running ``pytest``. If project tests fails use ``pytest --keep-baked-projects`` to keep generated project in /tmp/pytest-* and investigate;
+6. add your own tests (if necessary);
+7. update or expand the documentation;
+8. push your feature branch to (your fork of) the Python Template repository on GitHub;
+9. create the pull request, e.g. following the instructions [here](https://help.github.com/articles/creating-a-pull-request/).
 
-### Submit Feedback
-If you are proposing a feature:
-
-*   Explain in detail how it would work.
-*   Keep the scope as narrow as possible, to make it easier to implement.
-*   Remember that this is a volunteer-driven project, and that contributions are welcome :)
-
-## Pull request process
-
-*   Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("UBC-MDS/f1-2021-analysis", fork = TRUE)`.
-
-*   Install all development dependencies with `devtools::install_dev_deps()`, and then make sure the package passes R CMD check by running `devtools::check()`. 
-    If R CMD check doesn't pass cleanly, it's a good idea to ask for help before continuing. 
-*   Create a Git branch for your pull request (PR). We recommend using `usethis::pr_init("brief-description-of-change")`.
-
-*   Make your changes, commit to git, and then create a PR by running `usethis::pr_push()`, and following the prompts in your browser.
-    The title of your PR should briefly describe the change.
-    The body of your PR should contain `Fixes #issue-number`.
-
-*  For user-facing changes, add a bullet to the top of `NEWS.md` (i.e. just below the first header). Follow the style described in <https://style.tidyverse.org/news.html>.
-
-### Code style
-
-*   New code should follow the tidyverse [style guide](https://style.tidyverse.org). 
-    You can use the [styler](https://CRAN.R-project.org/package=styler) package to apply these styles, but please don't restyle code that has nothing to do with your PR.  
-
-*  We use [roxygen2](https://cran.r-project.org/package=roxygen2), with [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html), for documentation.  
-
-*  We use [testthat](https://cran.r-project.org/package=testthat) for unit tests. 
-   Contributions with test cases included are easier to accept.  
-
-## Code of Conduct
-
-Please note that the f1-2021-analysis project is released with a
-[Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this
-project you agree to abide by its terms.
+In case you feel like you've made a valuable contribution, but you don't know how to write or run tests for it, or how to generate the documentation: don't let this discourage you from making the pull request; we can help you! Just go ahead and submit the pull request, but keep in mind that you might be asked to append additional commits to your pull request.
