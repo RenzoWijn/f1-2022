@@ -39,11 +39,9 @@ On race day, the drivers race for 300 kilometers around that weekends track, in 
 
 Then, once the 300 kilometers are up, the order in which the drivers cross the finish line determines their position for that race, and more importantly how many points they get! And additionally, the driver that set the fastest lap time during the race, receives one extra bonus championship point.
 
-
-
 ## The Description
 
-![Landing Page](/www/sketch/f1-dash-demo1.gif)
+![Dashboard](/reports/Dashboard.png)
 
 Our app opens on the Season Calendar page. On the left hand side you can see all the details of the selected track, including a map of its layout. To the right is the world map, with all the locations of the races for this years calendar. When you click one, its details will show up in the table to the left. There is also a toggle button to display the order and the route in which this season takes place, to understand where the next race is in comparison with the current!
 
