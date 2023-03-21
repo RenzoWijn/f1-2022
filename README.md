@@ -15,7 +15,7 @@ Firstly, a quick overview of what you can find on this page:
   - [The License](#the-license)
   - [The Credits](#the-credits)
 
-![Lights out](/www/sketch/lights_out.png)
+![Lights out](reports/lights_out.png)
 
 ## The Contributors
 
@@ -41,7 +41,7 @@ Then, once the 300 kilometers are up, the order in which the drivers cross the f
 
 ## The Description
 
-![Dashboard](/reports/Dashboard.png)
+![Dashboard](reports/Dashboard.png)
 
 Our app opens on the Season Calendar page. On the left hand side you can see all the details of the selected track, including a map of its layout. To the right is the world map, with all the locations of the races for this years calendar. When you click one, its details will show up in the table to the left. There is also a toggle button to display the order and the route in which this season takes place, to understand where the next race is in comparison with the current!
 
