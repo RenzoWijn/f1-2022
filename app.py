@@ -1,10 +1,9 @@
 import dash
+import dash_table
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.express as px
 import pandas as pd
-import dash_table
 import os
 
 # Load data
@@ -17,6 +16,9 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
 app.title = "F1 Dash"
 app._favicon = (os.path.join('image', 'f1.ico'))
 
+# Create server
+server = app.server
+
 # Define layout
 app.layout = dbc.Container([
     dbc.Row([
@@ -28,8 +30,10 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col([
             dbc.Row([
-                html.Img(id="image")
-            ]),
+                html.Img(id="image", style={
+                    'width':'60%',
+                    })
+            ], justify="center"),
             dbc.Row([
                 dash_table.DataTable(
                 id="table",
@@ -38,7 +42,7 @@ app.layout = dbc.Container([
                     {"name": "GP", "id": "Value"},
                 ],
                 style_cell={
-                'textAlign': 'center',
+                'textAlign': 'left',
                 'padding': '5px',
                 'backgroundColor': '#222222',  # set background color of cell
                 'color': 'white',  # set text color of cell
@@ -58,35 +62,45 @@ app.layout = dbc.Container([
                 fill_width=False,
                 # className="table-striped table-hover table-bordered"
                 )
-            ]),
-        ], width=4),
+            ], justify="center"),
+        ], width=4,style={'border': '1px solid #d3d3d3', 'border-radius': '10px'}, align='center'),
         
         dbc.Col([
             dcc.Graph(
-            id="map",
-            figure={
-                "data": [
-                    {
-                        "type": "scattermapbox",
-                        "lat": df["lat"],
-                        "lon": df["lng"],
-                        "mode": "markers",
-                        "marker": {"size": 10},
-                        "hovertemplate": "%{text}<extra></extra>",
-                        "text": df["Circuit Name"],
-                    }
-                ],
-                "layout": {
-                    "mapbox": {
-                        "style": "carto-darkmatter",
-                        "center": {"lat": df["lat"].mean(), "lon": df["lng"].mean()},
-                        "zoom": 1,
+                id="map",
+                figure={
+                    "data": [
+                        {
+                            "type": "scattermapbox",
+                            "lat": df["lat"],
+                            "lon": df["lng"],
+                            "mode": "markers",
+                            "marker": {"size": 10},
+                            "hovertemplate": "%{text}<extra></extra>",
+                            "text": df["Circuit Name"],
+                        }
+                    ],
+                    "layout": {
+                        "mapbox": {
+                            "style": "carto-darkmatter",
+                            "center": {"lat": df["lat"].mean(), "lon": df["lng"].mean()},
+                            "zoom": 1,
+                        },
+                        "margin": {"l": 0, "r": 0, "t": 0, "b": 0},
+                        "height": 600,
+                        "showlegend": False
                     },
-                    "margin": {"l": 0, "r": 0, "t": 0, "b": 0},
-                    "height": 600,
                 },
-            },
-        ),
+            ),
+            dcc.RadioItems(
+                id="toggle-lines",
+                options=[
+                    {"label": "Show Route", "value": "on"},
+                    {"label": "Hide Route", "value": "off"},
+                ],
+                value="off",
+                labelStyle={"display": "inline-block", "margin-right": "20px"},
+            ),
         ], width=8)
     ]),
 ])
@@ -99,9 +113,10 @@ app.layout = dbc.Container([
 
 def update_table(click_data):
     if not click_data:
-        return []
-    point_index = click_data["points"][0]["pointNumber"]
-    row = df.iloc[point_index]
+        row = df.iloc[0]
+    else:
+        point_index = click_data["points"][0]["pointNumber"]
+        row = df.iloc[point_index]
     data = [
         {"Column": "Country", "Value": row["Country"]},
         {"Column": "City", "Value": row["City"]},
@@ -125,11 +140,34 @@ def update_table(click_data):
 
 def update_image(click_data):
     if not click_data:
-        return ""
+        return os.path.join("assets", f"{df.iloc[0]['GP Name']}.png")
     point_index = click_data["points"][0]["pointNumber"]
     row = df.iloc[point_index]
     image_path = os.path.join("assets", f"{row['GP Name']}.png")
     return image_path if os.path.exists(image_path) else ""
+
+@app.callback(
+    dash.dependencies.Output("map", "figure"),
+    dash.dependencies.Input("toggle-lines", "value"),
+    dash.dependencies.State("map", "figure"),
+)
+def toggle_lines(value, fig):
+    if value == "on":
+        # add lines to the map
+        fig["data"].append(
+            {
+                "type": "scattermapbox",
+                "lat": df["lat"],
+                "lon": df["lng"],
+                "mode": "lines",
+                "line": {"width": 2, "color": "red"},
+                "hoverinfo": "none",
+            }
+        )
+    else:
+        # remove lines from the map
+        fig["data"] = fig["data"][:1]
+    return fig
 
 if __name__ == "__main__":
     app.run_server(debug=True)
