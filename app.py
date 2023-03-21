@@ -5,14 +5,13 @@ import pandas as pd
 import os
 
 # Load data
-data1 = pd.read_csv("https://raw.githubusercontent.com/toUpperCase78/formula1-datasets/master/Formula1_2022season_calendar.csv")
+data1 = pd.read_csv("data/2023Calendar.csv")
 data2 = pd.read_csv("data/circuits.csv").rename(columns={"name": "Circuit Name"})
 df = pd.merge(data1, data2)
 
 # Create app
 app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
-app.title = "F1 Dash"
-app._favicon = (os.path.join('image', 'f1.ico'))
+app.title = "F1 2022 Calendar"
 
 # Create server
 server = app.server
@@ -21,7 +20,8 @@ server = app.server
 app.layout = dbc.Container([
     dbc.Row([
         dbc.Col([
-            html.H1("The Formula 1 2022 Season, Visualised", style={'textAlign': 'center'})
+            html.H1("The Formula 1 2023 Season Calendar", style={'textAlign': 'center', 'color': 'white'}),
+            html.H3("Click a location to see its details!", style={'textAlign': 'center'})
         ], width=12)
     ]),
     
@@ -61,7 +61,9 @@ app.layout = dbc.Container([
                 # className="table-striped table-hover table-bordered"
                 )
             ], justify="center"),
-        ], width=4,style={'border': '1px solid #d3d3d3', 'border-radius': '10px'}, align='center'),
+        ], 
+        width=4,
+        style={'border': '1px solid #d3d3d3', 'border-radius': '10px'}, align='center'),
         
         dbc.Col([
             dcc.Graph(
@@ -159,7 +161,8 @@ def toggle_lines(value, fig):
                 "lon": df["lng"],
                 "mode": "lines",
                 "line": {"width": 2, "color": "red"},
-                "hoverinfo": "none",
+                "hovertemplate": "%{text}<extra></extra>",
+                "text": df["Circuit Name"]
             }
         )
     else:
