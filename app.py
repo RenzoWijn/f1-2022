@@ -1,8 +1,6 @@
-import dash
-import dash_table
-import dash_bootstrap_components as dbc
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import Dash, dcc, html, dash_table, dbc
+from dash.dependencies import Input, State, Output
+# import dash_bootstrap_components as dbc
 import pandas as pd
 import os
 
@@ -12,7 +10,7 @@ data2 = pd.read_csv("data/circuits.csv").rename(columns={"name": "Circuit Name"}
 df = pd.merge(data1, data2)
 
 # Create app
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
+app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
 app.title = "F1 Dash"
 app._favicon = (os.path.join('image', 'f1.ico'))
 
@@ -107,8 +105,8 @@ app.layout = dbc.Container([
 
 # Define callback to update table
 @app.callback(
-    dash.dependencies.Output("table", "data"),
-    dash.dependencies.Input("map", "clickData"),
+    Output("table", "data"),
+    Input("map", "clickData"),
 )
 
 def update_table(click_data):
@@ -134,8 +132,8 @@ def update_table(click_data):
 
 # Define callback to update image
 @app.callback(
-    dash.dependencies.Output("image", "src"),
-    dash.dependencies.Input("map", "clickData"),
+    Output("image", "src"),
+    Input("map", "clickData"),
 )
 
 def update_image(click_data):
@@ -147,9 +145,9 @@ def update_image(click_data):
     return image_path if os.path.exists(image_path) else ""
 
 @app.callback(
-    dash.dependencies.Output("map", "figure"),
-    dash.dependencies.Input("toggle-lines", "value"),
-    dash.dependencies.State("map", "figure"),
+    Output("map", "figure"),
+    Input("toggle-lines", "value"),
+    State("map", "figure"),
 )
 def toggle_lines(value, fig):
     if value == "on":
