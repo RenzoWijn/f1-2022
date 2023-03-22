@@ -53,6 +53,8 @@ git clone git@github.com:RenzoWijn/f1-2023-calendar.git # If SSH is set up
 
 cd f1-2023-calendar
 
+pip install -r requirements.txt
+
 python app.py
 ```
 
