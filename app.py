@@ -52,9 +52,7 @@ app.layout = dbc.Container([
                 html.H2(id="track_name", style={'text-align': 'center'})
             ]),
             dbc.Row([
-                html.Img(id="image", style={
-                    'width':'60%',
-                    })
+                html.Img(id="image", style={'width':'60%'})
             ], justify="center"),
             dbc.Row([
                 html.Table(id='table', style = {'text-align': 'center'})
@@ -103,7 +101,8 @@ app.layout = dbc.Container([
     ]),
 ])
 
-# Define the callback to update track title
+
+# Track title
 @app.callback(
     Output('track_name', 'children'),
     Input('map', 'clickData')
@@ -116,10 +115,11 @@ def update_title(clickData):
         selected_row = df.iloc[point_index]
     return selected_row["Circuit Name"]
 
-# Define the callback to update the table
+# Table contents
 @app.callback(
     Output('table', 'children'),
-    Input('map', 'clickData'))
+    Input('map', 'clickData')
+)
 def update_table(clickData):
     if clickData is None:
         selected_row = pd.DataFrame(df.iloc[0])
@@ -129,12 +129,11 @@ def update_table(clickData):
     rows = [html.Tr([html.Td([i], style={'border': '1px solid'})] + [html.Td(selected_row.loc[i], style={'border': '1px solid'})], style={'border': '1px solid black'}) for i in columns]
     return  rows
 
-# Define callback to update image
+# Track layout
 @app.callback(
     Output("image", "src"),
     Input("map", "clickData"),
 )
-
 def update_image(click_data):
     if not click_data:
         return os.path.join("assets", f"{df.iloc[0]['GP Name']}.png")
@@ -143,6 +142,7 @@ def update_image(click_data):
     image_path = os.path.join("assets", f"{row['GP Name']}.png")
     return image_path if os.path.exists(image_path) else ""
 
+# Toggle route
 @app.callback(
     Output("map", "figure"),
     Input("toggle-lines", "value"),
@@ -166,6 +166,7 @@ def toggle_lines(value, fig):
         # remove lines from the map
         fig["data"] = fig["data"][:1]
     return fig
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)
