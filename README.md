@@ -2,7 +2,7 @@
 
 ## Welcome  
 
-Whether you consider yourself a true Formula 1 veteran, or this is the first time you've heard of the sport, we bid you welcome to: [our dashboard!](https://f1-2023-calendar.onrender.com/)  
+Whether you consider yourself a true Formula 1 veteran, or this is the first time you've heard of the sport, I bid you welcome to: [my dashboard!](https://f1-2023-calendar.onrender.com/)  
 
 Firstly, a quick overview of what you can find on this page:
 - [Visualising the Formula 1 2022 Calendar](#visualising-the-formula-1-2022-calendar)
@@ -43,7 +43,7 @@ Then, once the 300 kilometers are up, the order in which the drivers cross the f
 
 ![Dashboard](reports/Dashboard.png)
 
-Our app opens on the Season Calendar page. On the left hand side you can see all the details of the selected track, including a map of its layout. To the right is the world map, with all the locations of the races for this years calendar. When you click one, its details will show up in the table to the left. There is also a toggle button to display the order and the route in which this season takes place, to understand where the next race is in comparison with the current!
+The app opens on the Season Calendar page. On the left hand side you can see all the details of the selected track, including a map of its layout. To the right is the world map, with all the locations of the races for this years calendar. When you click one, its details will show up in the table to the left. There is also a toggle button to display the order and the route in which this season takes place, to understand where the next race is in comparison with the current!
 
 ## The Contributing Guidelines
 Do you have ideas on how I can improve my dashboard, and are you interested in contributing? I'd love to see your suggestions! To make changes locally just clone the repo, navigate to the top folder, and run the app:
@@ -56,7 +56,7 @@ cd f1-2023-calendar
 python app.py
 ```
 
-Check out the [contributing guidelines](CONTRIBUTING.md) if you're looking to make additions to our project! Please note that this project is released with a [Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+Check out the [contributing guidelines](CONTRIBUTING.md) if you're looking to make additions to this project! Please note that this project is released with a [Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 ## The License
 `f1-2023-calendar` was created by Renzo Wijngaarden. It is licensed under the terms of the MIT license.
 ## The Credits
