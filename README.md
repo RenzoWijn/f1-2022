@@ -2,7 +2,7 @@
 
 ## Welcome  
 
-Whether you consider yourself a true Formula 1 veteran, or this is the first time you've heard of the sport, we bid you welcome to: [our dashboard!](https://f1-2022.onrender.com/)  
+Whether you consider yourself a true Formula 1 veteran, or this is the first time you've heard of the sport, we bid you welcome to: [our dashboard!](https://f1-2023-calendar.onrender.com/)  
 
 Firstly, a quick overview of what you can find on this page:
 - [Visualising the Formula 1 2022 Calendar](#visualising-the-formula-1-2022-calendar)

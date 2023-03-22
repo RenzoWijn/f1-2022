@@ -8,6 +8,19 @@ import os
 data1 = pd.read_csv("data/2023Calendar.csv")
 data2 = pd.read_csv("data/circuits.csv").rename(columns={"name": "Circuit Name"})
 df = pd.merge(data1, data2)
+columns = [
+    "Country", 
+    "City", 
+    "GP Name", 
+    "Round", 
+    "Race Date", 
+    "Number of Laps", 
+    "Circuit Length(km)", 
+    "Race Distance(km)", 
+    "Turns", 
+    "DRS Zones", 
+    "First GP"
+]
 
 # Create app
 app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
@@ -20,46 +33,31 @@ server = app.server
 app.layout = dbc.Container([
     dbc.Row([
         dbc.Col([
-            html.H1("The Formula 1 2023 Season Calendar", style={'textAlign': 'center', 'color': 'white'}),
-            html.H3("Click a location to see its details!", style={'textAlign': 'center'})
+            html.H1([
+                "The", 
+                html.Span(" Formula 1 ", style={'color': 'red', "font-style": "italic"}), 
+                "2023 Season Calendar"
+                ], 
+                style={
+                    'textAlign': 'center', 
+                    'color': 'white'
+                }
+            )
         ], width=12)
     ]),
     
     dbc.Row([
         dbc.Col([
             dbc.Row([
+                html.H2(id="track_name", style={'text-align': 'center'})
+            ]),
+            dbc.Row([
                 html.Img(id="image", style={
                     'width':'60%',
                     })
             ], justify="center"),
             dbc.Row([
-                dash_table.DataTable(
-                id="table",
-                columns=[
-                    {"name": "Stats", "id": "Column"},
-                    {"name": "GP", "id": "Value"},
-                ],
-                style_cell={
-                'textAlign': 'left',
-                'padding': '5px',
-                'backgroundColor': '#222222',  # set background color of cell
-                'color': 'white',  # set text color of cell
-                'font-size': '16px',  # set font size of cell
-                },
-                style_header={
-                    'backgroundColor': '#333333',  # set background color of header
-                    'fontWeight': 'bold',  # set font weight of header
-                    'color': 'white',  # set text color of header
-                    'font-size': '20px',  # set font size of header
-                },
-                style_table={
-                    "width": "100%",
-                    "height": "400px",
-                    "overflowY": "auto",
-                },
-                fill_width=False,
-                # className="table-striped table-hover table-bordered"
-                )
+                html.Table(id='table', style = {'text-align': 'center'})
             ], justify="center"),
         ], 
         width=4,
@@ -105,32 +103,31 @@ app.layout = dbc.Container([
     ]),
 ])
 
-# Define callback to update table
+# Define the callback to update track title
 @app.callback(
-    Output("table", "data"),
-    Input("map", "clickData"),
+    Output('track_name', 'children'),
+    Input('map', 'clickData')
 )
-
-def update_table(click_data):
-    if not click_data:
-        row = df.iloc[0]
+def update_title(clickData):
+    if clickData is None:
+        selected_row = df.iloc[0]
     else:
-        point_index = click_data["points"][0]["pointNumber"]
-        row = df.iloc[point_index]
-    data = [
-        {"Column": "Country", "Value": row["Country"]},
-        {"Column": "City", "Value": row["City"]},
-        {"Column": "Grand Prix Name", "Value": row["GP Name"]},
-        {"Column": "Round", "Value": row["Round"]},
-        {"Column": "Race Date", "Value": row["Race Date"]},
-        {"Column": "Number of Laps", "Value": row["Number of Laps"]},
-        {"Column": "Circuit Length(km)", "Value": row["Circuit Length(km)"]},
-        {"Column": "Race Distance(km)", "Value": row["Race Distance(km)"]},
-        {"Column": "Turns", "Value": row["Turns"]},
-        {"Column": "DRS Zones", "Value": row["DRS Zones"]},
-        {"Column": "Year of First GP", "Value": row["First GP"]},
-    ]
-    return data
+        point_index = clickData['points'][0]['pointNumber']
+        selected_row = df.iloc[point_index]
+    return selected_row["Circuit Name"]
+
+# Define the callback to update the table
+@app.callback(
+    Output('table', 'children'),
+    Input('map', 'clickData'))
+def update_table(clickData):
+    if clickData is None:
+        selected_row = pd.DataFrame(df.iloc[0])
+    else:
+        point_index = clickData['points'][0]['pointNumber']
+        selected_row = pd.DataFrame(df.iloc[point_index])
+    rows = [html.Tr([html.Td([i], style={'border': '1px solid'})] + [html.Td(selected_row.loc[i], style={'border': '1px solid'})], style={'border': '1px solid black'}) for i in columns]
+    return  rows
 
 # Define callback to update image
 @app.callback(
@@ -162,7 +159,7 @@ def toggle_lines(value, fig):
                 "mode": "lines",
                 "line": {"width": 2, "color": "red"},
                 "hovertemplate": "%{text}<extra></extra>",
-                "text": df["Circuit Name"]
+                "text": df["Round"]
             }
         )
     else:
